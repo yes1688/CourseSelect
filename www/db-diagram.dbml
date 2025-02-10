@@ -1,0 +1,40 @@
+
+Table teachers {
+  id         int       [pk, increment] // 講師 ID
+  name       varchar   // 講師姓名
+  email      varchar   [unique]      // 講師 Email，唯一索引
+  password   varchar   // 登入密碼
+  created_at timestamp // 建立時間
+  updated_at timestamp // 更新時間
+}
+
+Table students {
+  id         int       [pk, increment] // 學生 ID
+  name       varchar   // 學生姓名
+  email      varchar   [unique]      // 學生 Email，唯一索引
+  password   varchar   // 登入密碼
+  created_at timestamp // 建立時間
+  updated_at timestamp // 更新時間
+}
+
+Table courses {
+  id          int      [pk, increment] // 課程 ID
+  name        varchar  // 課程名稱
+  description text     [note: 'nullable'] // 課程簡介，可為 null
+  start_time  char(4)  // 上課時間 (hhmm 格式)
+  end_time    char(4)  // 下課時間 (hhmm 格式)
+  teacher_id  int      [ref: > teachers.id] // 外鍵，對應講師
+  created_at  timestamp // 建立時間
+  updated_at  timestamp // 更新時間
+}
+
+Table course_student {
+  course_id  int  [ref: > courses.id]  // 課程外鍵
+  student_id int  [ref: > students.id] // 學生外鍵
+  created_at timestamp // 建立時間
+  updated_at timestamp // 更新時間
+
+  indexes {
+    (course_id, student_id) [pk] // 組合主鍵，避免重複選課
+  }
+}

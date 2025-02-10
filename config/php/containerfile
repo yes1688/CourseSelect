@@ -1,0 +1,17 @@
+FROM php:8.2-fpm
+RUN apt-get update && apt-get install -y \
+    git \
+    libzip-dev \
+    zip \
+    unzip \
+    npm \
+    procps \
+    libcurl4-openssl-dev \
+    libonig-dev \
+    libssl-dev
+# 安裝 PHP 擴展
+RUN docker-php-ext-install pdo pdo_mysql zip bcmath
+# 安裝 Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# 將 php.ini 檔案複製到容器中的適當位置
+COPY ./conf.d/php.ini /usr/local/etc/php/php.ini

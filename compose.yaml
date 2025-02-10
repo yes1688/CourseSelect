@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  courseselect_web:
+    image: docker.io/library/nginx:stable
+    ports:
+      - 8080:80
+      - 4433:443
+    volumes:
+      - ./www:/www
+      - ./config/nginx/site.conf:/etc/nginx/conf.d/site.conf
+      - ./config/cert:/etc/nginx/cert
+    depends_on:
+      - courseselect_php
+      - courseselect_db
+  courseselect_php:
+    build:
+      context: ./config/php/
+      dockerfile: containerfile
+    volumes:
+      - ./www:/www
+      - ./config/cert:/etc/nginx/cert
+  courseselect_db:
+    image: "mariadb:11.1.2"
+    restart: always
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./config/db/data:/var/lib/mysql
+      - ./config/db/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      MARIADB_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: courseselect_db
+      MYSQL_USER: courseselect_user
+      MYSQL_PASSWORD: "JIJe4OzusO6a5IhA1IG56u6I2usu1u"

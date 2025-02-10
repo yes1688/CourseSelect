@@ -1,0 +1,349 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Course Select API Documentation",
+        "description": "API 文件說明 - Course Select 系統",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "paths": {
+        "/courses": {
+            "get": {
+                "summary": "取得課程列表並附帶講師資訊 (僅取2筆)",
+                "operationId": "37c5c37794e46a7b0debd611ab297e9e",
+                "responses": {
+                    "200": {
+                        "description": "成功取得課程資料",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Course"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "新增課程",
+                "operationId": "0faffeb3b3c57da1ca08bfe7386c04c5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CourseInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "成功建立課程",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/courses/{course}": {
+            "put": {
+                "summary": "更新課程",
+                "operationId": "def6749c2a97c1f9fafe7133c5aa882b",
+                "parameters": [
+                    {
+                        "name": "course",
+                        "in": "path",
+                        "description": "課程 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CourseInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功更新課程",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "刪除課程",
+                "operationId": "ebeb1fde6779097e8547be9af11776f0",
+                "parameters": [
+                    {
+                        "name": "course",
+                        "in": "path",
+                        "description": "課程 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功刪除課程",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Course deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/teachers": {
+            "get": {
+                "summary": "取得講師列表 (僅取2筆)",
+                "operationId": "dbea6118252d78b5ca1fd888c3dce6e2",
+                "responses": {
+                    "200": {
+                        "description": "成功取得講師資料",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Teacher"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "新增講師",
+                "operationId": "fc5d6b5770d6aaccb063f86ca04f739c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeacherInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "成功建立講師",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Teacher"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/teachers/{teacher}/courses": {
+            "get": {
+                "summary": "取得指定講師所開課程列表 (僅取2筆)",
+                "operationId": "0721f662f06ad54f2d87e9dc58dd13a2",
+                "parameters": [
+                    {
+                        "name": "teacher",
+                        "in": "path",
+                        "description": "講師 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功取得課程列表",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Course"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Teacher": {
+                "description": "講師資料結構",
+                "properties": {
+                    "id": {
+                        "description": "講師 ID",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "講師姓名",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "講師 Email",
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "type": "object"
+            },
+            "TeacherWithCourses": {
+                "description": "包含課程資訊的講師資料結構",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Teacher"
+                    },
+                    {
+                        "properties": {
+                            "courses": {
+                                "description": "講師開設的課程",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "Course": {
+                "description": "課程資料結構",
+                "properties": {
+                    "id": {
+                        "description": "課程 ID",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "課程名稱",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "課程簡介",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "start_time": {
+                        "description": "上課時間 (hhmm)",
+                        "type": "string"
+                    },
+                    "end_time": {
+                        "description": "下課時間 (hhmm)",
+                        "type": "string"
+                    },
+                    "teacher_id": {
+                        "description": "講師 ID",
+                        "type": "integer"
+                    },
+                    "teacher": {
+                        "$ref": "#/components/schemas/Teacher"
+                    }
+                },
+                "type": "object"
+            },
+            "CourseInput": {
+                "description": "新增/更新課程用的資料結構",
+                "required": [
+                    "name",
+                    "start_time",
+                    "end_time",
+                    "teacher_id"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "課程名稱",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "課程簡介",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "start_time": {
+                        "description": "上課時間 (hhmm)",
+                        "type": "string"
+                    },
+                    "end_time": {
+                        "description": "下課時間 (hhmm)",
+                        "type": "string"
+                    },
+                    "teacher_id": {
+                        "description": "講師 ID",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "TeacherInput": {
+                "description": "新增講師用的資料結構",
+                "required": [
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "講師姓名",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "講師 Email",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "description": "登入密碼",
+                        "type": "string",
+                        "format": "password"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
